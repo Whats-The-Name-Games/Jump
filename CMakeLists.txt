@@ -18,6 +18,11 @@ FetchContent_MakeAvailable(SDL3)
 
 add_subdirectory(src)
 
+# Now deal with potential libstdc++ problems on windows using mingw (if on msvc should be fine) (just use mscv)
+if (MINGW)
+    target_link_options(jump PRIVATE "-static-libstdc++" "-static-libgcc")
+ENDIF()
+
 target_link_libraries(jump PRIVATE
     SDL3::SDL3
 )
