@@ -7,8 +7,11 @@
  *  Artwork by: Ted Freakdogshow
 */
 
-static SDL_Window *window {nullptr};
-static SDL_Renderer *renderer {nullptr};
+typedef struct {
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    bool is_running;
+} AppState;
 
 constexpr int WIDTH = 720;
 constexpr int HEIGHT = 1280;
@@ -21,11 +24,14 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
         return SDL_APP_FAILURE;
     }
 
-    if (!SDL_CreateWindowAndRenderer("Jig is Up", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+    AppState* state {new AppState()};
+    *appstate = state;
+
+    if (!SDL_CreateWindowAndRenderer("Jig is Up", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &state->window, &state->renderer)) {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
-    SDL_SetRenderLogicalPresentation(renderer, WIDTH, HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+    SDL_SetRenderLogicalPresentation(state->renderer, WIDTH, HEIGHT, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
     return SDL_APP_CONTINUE;
 }
@@ -33,17 +39,21 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 // Every frame? Maybe? Something like that
 SDL_AppResult SDL_AppIterate(void *appstate) {
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE_FLOAT);
+    const AppState* state { static_cast<AppState *>(appstate) };
 
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(state->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE_FLOAT);
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderClear(state->renderer);
+
+    SDL_RenderPresent(state->renderer);
 
     return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     // Get mouse input and set player to where it is at
+
+    const AppState* state { static_cast<AppState *>(appstate) };
 
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;
