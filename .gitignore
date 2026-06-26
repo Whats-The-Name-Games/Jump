@@ -1,0 +1,2 @@
+# Default build location as specified in the README. Safeguard to prevent accidentally commiting build fragments to the repo
+build
