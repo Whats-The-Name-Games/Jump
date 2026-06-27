@@ -2,4 +2,6 @@
         Character.cpp
         Character.h
         Platform.cpp
-        Platform.h)
+        Platform.h
+        Game.cpp
+        Game.h)
