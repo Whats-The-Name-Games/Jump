@@ -1,5 +1,5 @@
 ﻿
-#include "Character.h"
+#include "Character.hpp"
 #include "SDL3/SDL_log.h"
 
 Character::Character(SDL_Renderer *renderer) {

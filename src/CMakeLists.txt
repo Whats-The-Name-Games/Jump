@@ -1,7 +1,7 @@
 ﻿add_executable(jump main.cpp
         Character.cpp
-        Character.h
+        Character.hpp
         Platform.cpp
-        Platform.h
+        Platform.hpp
         Game.cpp
-        Game.h)
+        Game.hpp)
