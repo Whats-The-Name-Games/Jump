@@ -4,3 +4,9 @@ build
 # Extra options for multigenerators
 cmake-build-debug
 cmake-build-release
+
+# CLion project files
+/.idea/workspace.xml
+/.idea/usage.statistics.xml
+/.idea/shelf
+*.iml
