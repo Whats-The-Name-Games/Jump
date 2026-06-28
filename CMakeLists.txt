@@ -42,6 +42,13 @@ if (MINGW)
     target_link_options(jump PRIVATE "-static-libstdc++" "-static-libgcc")
 ENDIF()
 
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+else()
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+endif()
+
 target_link_libraries(jump PRIVATE
         SDL3::SDL3
         SDL3_image::SDL3_image
