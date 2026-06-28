@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 4.2)
 project(jump)
 
+# Ensure all our SDL libraries are compiled together with our binary
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -14,6 +15,7 @@ FetchContent_Declare(
         FIND_PACKAGE_ARGS NAMES SDL3
 )
 
+# Requires NASM to support AVIF, not worth the hassle
 set(SDLIMAGE_VENDORED ON)
 set(SDLIMAGE_AVIF OFF)
 
@@ -28,6 +30,7 @@ FetchContent_MakeAvailable(SDL3 SDL3_image)
 
 add_subdirectory(src)
 
+# Copy our assets into our output binary directory
 FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/assets")
 
 file(GLOB ASSETS "assets/*")
@@ -40,6 +43,6 @@ if (MINGW)
 ENDIF()
 
 target_link_libraries(jump PRIVATE
-    SDL3::SDL3
+        SDL3::SDL3
         SDL3_image::SDL3_image
 )
