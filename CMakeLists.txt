@@ -43,10 +43,18 @@ if (MINGW)
 ENDIF()
 
 
-if (MSVC)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
-else()
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    if (MSVC)
+        # don't know if this works!
+        target_compile_options(jump PRIVATE /O2)
+
+        # disables the lib for the main executable, NOT for the libraries compiled, need other solution for that i guess
+        target_link_options(jump PRIVATE
+            /NOIMPLIB /NOEXP
+        )
+    else()
+        target_compile_options(jump PRIVATE -O3)
+    endif()
 endif()
 
 target_link_libraries(jump PRIVATE
