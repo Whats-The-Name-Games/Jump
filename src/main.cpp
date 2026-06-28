@@ -37,6 +37,8 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
     state->player = new Character(state->renderer);
 
+    SDL_SetRenderVSync( state->renderer, 1 );
+
 
     return SDL_APP_CONTINUE;
 }
