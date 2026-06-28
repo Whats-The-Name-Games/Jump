@@ -1,2 +1,6 @@
 # Default build location as specified in the README. Safeguard to prevent accidentally commiting build fragments to the repo
 build
+
+# Extra options for multigenerators
+cmake-build-debug
+cmake-build-release
