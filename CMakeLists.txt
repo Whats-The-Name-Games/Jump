@@ -40,7 +40,7 @@ file(COPY ${ASSETS} DESTINATION ${CMAKE_BINARY_DIR}/assets)
 # Now deal with potential libstdc++ problems on windows using mingw (if on msvc should be fine) (just use mscv)
 if (MINGW)
     target_link_options(jump PRIVATE "-static-libstdc++" "-static-libgcc")
-ENDIF()
+ENDIF ()
 
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -50,12 +50,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
 
         # disables the lib for the main executable, NOT for the libraries compiled, need other solution for that i guess
         target_link_options(jump PRIVATE
-            /NOIMPLIB /NOEXP
+                /NOIMPLIB /NOEXP
         )
-    else()
+    else ()
         target_compile_options(jump PRIVATE -O3)
-    endif()
-endif()
+    endif ()
+endif ()
 
 target_link_libraries(jump PRIVATE
         SDL3::SDL3

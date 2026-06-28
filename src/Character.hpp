@@ -3,22 +3,22 @@
 #include <SDL3_image/SDL_image.h>
 
 class Character {
-    public:
-    explicit Character(SDL_Renderer*);
+public:
+    explicit Character(SDL_Renderer *);
     ~Character();
 
-    void Render(SDL_Renderer*) const;
-        // Where the x should be
-        void MoveX(float);
+    void Render(SDL_Renderer *) const;
+    // Where the x should be
+    void MoveX(float);
 
-    private:
-        SDL_Texture* m_texture;
+private:
+    SDL_Texture *m_texture;
 
-        float m_x {50};
-        float m_y {640};
+    float m_x{50};
+    float m_y{640};
 
-        int m_width {0};
-        int m_height {0};
+    int m_width{0};
+    int m_height{0};
 };
 
-#endif //JUMP_CHARACTER_H
+#endif // JUMP_CHARACTER_H

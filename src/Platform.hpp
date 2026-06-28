@@ -3,11 +3,7 @@
 #define JUMP_PLATFORM_H
 
 
-
-class Platform {
-
-};
+class Platform {};
 
 
-
-#endif //JUMP_PLATFORM_H
+#endif // JUMP_PLATFORM_H

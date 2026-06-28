@@ -6,13 +6,13 @@
 /*
  *  Code by: Luke Deany and Michael Khan
  *  Artwork by: Ted Freakdogshow
-*/
+ */
 
 typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
-    Character* player;
-    Uint64 PreviousTick {0};
+    Character *player;
+    Uint64 PreviousTick{0};
     bool is_running;
 } AppState;
 
@@ -27,10 +27,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
         return SDL_APP_FAILURE;
     }
 
-    AppState* state {new AppState()};
+    AppState *state{new AppState()};
     *appstate = state;
 
-    if (!SDL_CreateWindowAndRenderer("Jig is Up", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &state->window, &state->renderer)) {
+    if (!SDL_CreateWindowAndRenderer("Jig is Up", WIDTH, HEIGHT, SDL_WINDOW_RESIZABLE, &state->window,
+                                     &state->renderer)) {
         SDL_Log("Failed to initialize SDL: %s", SDL_GetError());
         return SDL_APP_FAILURE;
     }
@@ -38,7 +39,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
     state->player = new Character(state->renderer);
 
-    SDL_SetRenderVSync( state->renderer, 1 );
+    SDL_SetRenderVSync(state->renderer, 1);
 
 
     return SDL_APP_CONTINUE;
@@ -47,7 +48,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 // Every frame? Maybe? Something like that
 SDL_AppResult SDL_AppIterate(void *appstate) {
 
-    const auto state { static_cast<AppState *>(appstate) };
+    const auto state{static_cast<AppState *>(appstate)};
 
     const Uint64 currentTick{SDL_GetTicks()};
 
@@ -68,7 +69,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
     // Get mouse input and set player to where it is at
-    const auto state { static_cast<AppState *>(appstate) };
+    const auto state{static_cast<AppState *>(appstate)};
 
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;
@@ -82,12 +83,12 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 }
 
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
-    const auto state { static_cast<AppState *>(appstate) };
+    const auto state{static_cast<AppState *>(appstate)};
 
-    SDL_DestroyRenderer( state->renderer );
+    SDL_DestroyRenderer(state->renderer);
     state->renderer = nullptr;
 
-    SDL_DestroyWindow( state->window );
+    SDL_DestroyWindow(state->window);
     state->window = nullptr;
 
     delete state;
