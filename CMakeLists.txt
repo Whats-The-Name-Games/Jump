@@ -14,13 +14,6 @@ FetchContent_Declare(
         FIND_PACKAGE_ARGS NAMES SDL3
 )
 
-#set(USE_VENDORED_SDL 0 CACHE INTERNAL "")
-#set(BUILD_SHARED_LIBS OFF)
-#set(SDL_SHARED OFF)
-#set(SDL_STATIC ON)
-
-#set(SDLIMAGE_VENDORED ON)
-
 set(SDLIMAGE_VENDORED ON)
 set(SDLIMAGE_AVIF OFF)
 
@@ -33,8 +26,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SDL3 SDL3_image)
 
-#target_compile_definitions(SDL3_image PRIVATE DAV1D_ASM=0)
-
 add_subdirectory(src)
 
 FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/assets")
@@ -42,8 +33,6 @@ FILE(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/assets")
 file(GLOB ASSETS "assets/*")
 
 file(COPY ${ASSETS} DESTINATION ${CMAKE_BINARY_DIR}/assets)
-
-#configure_file(assets ${CMAKE_BINARY_DIR} COPYONLY)
 
 # Now deal with potential libstdc++ problems on windows using mingw (if on msvc should be fine) (just use mscv)
 if (MINGW)
