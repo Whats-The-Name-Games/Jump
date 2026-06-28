@@ -4,6 +4,7 @@ A game about going up by *Whats The Name Games*.
 ## Building
 ### Dependencies
 - SDL3 (pulled from source on build)
+- SDL3_image (pulled from source on build)
 
 ### How to Build
 CMake minimum requirement: *4.2*
