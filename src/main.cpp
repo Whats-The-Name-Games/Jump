@@ -12,6 +12,7 @@ typedef struct {
     SDL_Window *window;
     SDL_Renderer *renderer;
     Character* player;
+    Uint64 PreviousTick {0};
     bool is_running;
 } AppState;
 
@@ -47,6 +48,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
 
     const auto state { static_cast<AppState *>(appstate) };
+
+    const Uint64 currentTick{SDL_GetTicks()};
+
+    const Uint64 delta = currentTick - state->PreviousTick;
+
+    state->PreviousTick = currentTick;
 
     SDL_SetRenderDrawColor(state->renderer, 173, 216, 230, SDL_ALPHA_OPAQUE_FLOAT);
 
