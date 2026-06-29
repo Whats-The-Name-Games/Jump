@@ -1,6 +1,10 @@
 ﻿
 #include "Character.hpp"
 #include "SDL3/SDL_log.h"
+#include <algorithm>
+
+// Probably best somewhere else, but i'm tired of looking up best practices for today and just want this done
+constexpr float GRAVITY = 9.81f;
 
 Character::Character(SDL_Renderer *renderer) {
     SDL_Log("Character Constructed\n");
@@ -16,6 +20,20 @@ Character::Character(SDL_Renderer *renderer) {
         SDL_DestroySurface(loadedSurface);
     } else {
         SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load character.png");
+    }
+}
+
+// Have the character fall over time
+void Character::VelocityTick(const Uint64 delta) {
+    // Using the delta of frames, calculate how far we should fall (assuming velocity should change per second)
+    const float velocity_tick = static_cast<float>(delta) / 1000.0f;
+
+    m_velocity = std::max(-30.0f, m_velocity - GRAVITY * velocity_tick);
+
+    m_y -= m_velocity;
+    // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
+    if (m_y > 1280) {
+        m_y = -200;
     }
 }
 

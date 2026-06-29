@@ -61,6 +61,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(state->renderer);
 
     state->player->Render(state->renderer);
+    state->player->VelocityTick(delta);
 
     SDL_RenderPresent(state->renderer);
 

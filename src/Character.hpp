@@ -7,6 +7,8 @@ public:
     explicit Character(SDL_Renderer *);
     ~Character();
 
+    void VelocityTick(Uint64);
+
     void Render(SDL_Renderer *) const;
     // Where the x should be
     void MoveX(float);
@@ -19,6 +21,8 @@ private:
 
     int m_width{0};
     int m_height{0};
+
+    float m_velocity{0};
 };
 
 #endif // JUMP_CHARACTER_H
