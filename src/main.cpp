@@ -56,8 +56,10 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     state->PreviousTick = currentTick;
 
+    // Set fill color to background color
     SDL_SetRenderDrawColor(state->renderer, 173, 216, 230, SDL_ALPHA_OPAQUE_FLOAT);
 
+    // Render all "clear" pixels on screen w/ bg color
     SDL_RenderClear(state->renderer);
 
     state->player->Render(state->renderer);

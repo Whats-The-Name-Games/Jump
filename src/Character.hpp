@@ -4,24 +4,42 @@
 
 class Character {
 public:
+    /* Constructor & Destructor */
     explicit Character(SDL_Renderer *);
     ~Character();
 
+    /* Physics Functions (Delta Time) */
     void VelocityTick(Uint64);
 
+    /* Graphics Functions */
     void Render(SDL_Renderer *) const;
-    // Where the x should be
+    // "Move" in the physical sense, not memory.
+    // Move character's x position relative to the mouse's current X position
     void MoveX(float);
 
+    /* Remove unused default class functions */
+    // Remove Copy Constructor
+    Character(const Character &) = delete;
+    // Remove Copy Assignment
+    Character &operator=(const Character &) = delete;
+    // Remove Move Constructor
+    Character(Character &&) = delete;
+    // Remove Move Assignment
+    Character &operator=(Character &&) = delete;
+
 private:
+    // Texture Data
     SDL_Texture *m_texture;
 
+    // X and Y coordinate positions respectively
     float m_x{50};
     float m_y{640};
 
+    // Character width and height. Values updated to match texture size upon load
     int m_width{0};
     int m_height{0};
 
+    // The character's current vertical velocity.
     float m_velocity{0};
 };
 
