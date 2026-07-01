@@ -1,7 +1,7 @@
 ﻿
 #include "Character.hpp"
-#include "SDL3/SDL_log.h"
 #include <algorithm>
+#include "SDL3/SDL_log.h"
 
 // Probably best somewhere else, but i'm tired of looking up best practices for today and just want this done
 constexpr float GRAVITY = 9.81f;
@@ -39,8 +39,8 @@ void Character::VelocityTick(const Uint64 delta) {
     const int x2 = 500;
     const int y = 900;
 
-    //If we're in bounds, then increase velocity upward!
-    if ( m_velocity < 0 && (m_x >= x1 && m_x <= x2) && (m_y <= y && new_y >= y) ) {
+    // If we're in bounds, then increase velocity upward!
+    if (m_velocity < 0 && (m_x >= x1 && m_x <= x2) && (m_y <= y && new_y >= y)) {
         m_velocity = 10;
     }
 
@@ -52,8 +52,9 @@ void Character::VelocityTick(const Uint64 delta) {
 }
 
 void Character::Render(SDL_Renderer *renderer) const {
-    const SDL_FRect destinationRectangle{m_x - (static_cast<float>(150.f) / 2.0f), m_y, static_cast<float>(150),
-                                         static_cast<float>(150)};
+    const SDL_FRect destinationRectangle{m_x - (static_cast<float>(m_width) / 2.5f),
+                                         m_y - (static_cast<float>(m_height) / 2.0f), static_cast<float>(m_width),
+                                         static_cast<float>(m_height)};
 
     SDL_RenderTexture(renderer, m_texture, nullptr, &destinationRectangle);
 }
