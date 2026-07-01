@@ -30,8 +30,22 @@ void Character::VelocityTick(const Uint64 delta) {
 
     m_velocity = std::max(-30.0f, m_velocity - GRAVITY * velocity_tick);
 
-    m_y -= m_velocity;
+    float new_y = m_y - m_velocity;
+
+    // Calculate if we would have collided with a platform
+    // For now just assume a platform is there
+    // Platform X1, Platform X2, platform Y
+    const int x1 = 300;
+    const int x2 = 500;
+    const int y = 900;
+
+    //If we're in bounds, then increase velocity upward!
+    if ( m_velocity < 0 && (m_x >= x1 && m_x <= x2) && (m_y <= y && new_y >= y) ) {
+        m_velocity = 10;
+    }
+
     // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
+    m_y -= m_velocity;
     if (m_y > 1280) {
         m_y = -200;
     }
