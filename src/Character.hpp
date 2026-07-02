@@ -1,6 +1,7 @@
 ﻿#ifndef JUMP_CHARACTER_H
 #define JUMP_CHARACTER_H
 #include <SDL3_image/SDL_image.h>
+#include "BoundingBox.hpp"
 
 class Character {
 public:
@@ -9,6 +10,9 @@ public:
     ~Character();
 
     /* Physics Functions (Delta Time) */
+    // Bounding Box
+    BoundingBox *m_boundingBox;
+    // Given the time elapsed since the last tick, calculate the player's current velocity.
     void VelocityTick(Uint64);
 
     /* Graphics Functions */

@@ -12,13 +12,20 @@ Character::Character(SDL_Renderer *renderer) {
     SDL_Surface *loadedSurface = IMG_Load("../assets/character.png");
 
     if (loadedSurface != nullptr) {
+        // Load PNG, load as surface, convert to texture, clean up surface from memory and reap important information
+        // from time as a surface.
         m_texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 
         m_height = loadedSurface->h;
         m_width = loadedSurface->w;
 
         SDL_DestroySurface(loadedSurface);
+
+        // Create Bounding Box!
+        m_boundingBox = new BoundingBox(m_x, m_y, m_width, m_height);
     } else {
+        // TODO: This failure means we cannot provide collision for the player. Should this crash the program or lead it
+        // to default to a predefined size?
         SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load character.png");
     }
 }
@@ -52,7 +59,7 @@ void Character::VelocityTick(const Uint64 delta) {
 }
 
 void Character::Render(SDL_Renderer *renderer) const {
-    const SDL_FRect destinationRectangle{m_x - (static_cast<float>(m_width) / 2.5f),
+    const SDL_FRect destinationRectangle{m_x - (static_cast<float>(m_width) / 2.0f),
                                          m_y - (static_cast<float>(m_height) / 2.0f), static_cast<float>(m_width),
                                          static_cast<float>(m_height)};
 

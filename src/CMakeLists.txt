@@ -4,4 +4,7 @@
         Platform.cpp
         Platform.hpp
         Game.cpp
-        Game.hpp)
+        Game.hpp
+        BoundingBox.cpp
+        BoundingBox.hpp
+      )
