@@ -1,7 +1,8 @@
 ﻿
 #include "Character.hpp"
+#include <SDL3/SDL_log.h>
 #include <algorithm>
-#include "SDL3/SDL_log.h"
+#include "BoundingBox.hpp"
 
 // Probably best somewhere else, but i'm tired of looking up best practices for today and just want this done
 constexpr float GRAVITY = 9.81f;
