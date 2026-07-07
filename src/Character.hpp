@@ -1,6 +1,7 @@
 ﻿#ifndef JUMP_CHARACTER_H
 #define JUMP_CHARACTER_H
 #include <SDL3_image/SDL_image.h>
+#include <vector>
 #include "BoundingBox.hpp"
 
 class Character {
@@ -13,7 +14,7 @@ public:
     // Bounding Box
     BoundingBox *m_boundingBox;
     // Given the time elapsed since the last tick, calculate the player's current velocity.
-    void VelocityTick(Uint64);
+    void VelocityTick(Uint64, const std::vector<BoundingBox>&);
 
     /* Graphics Functions */
     void Render(SDL_Renderer *) const;

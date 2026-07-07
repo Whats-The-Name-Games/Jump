@@ -32,7 +32,7 @@ Character::Character(SDL_Renderer *renderer) {
 }
 
 // Have the character fall over time
-void Character::VelocityTick(const Uint64 delta) {
+void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox> &possibleCollisions) {
     // Using the delta of frames, calculate how far we should fall (assuming velocity should change per second)
     const float velocity_tick = static_cast<float>(delta) / 1000.0f;
 
@@ -43,13 +43,23 @@ void Character::VelocityTick(const Uint64 delta) {
     // Calculate if we would have collided with a platform
     // For now just assume a platform is there
     // Platform X1, Platform X2, platform Y
-    const int x1 = 300;
+    /*const int x1 = 300;
     const int x2 = 500;
     const int y = 900;
 
     // If we're in bounds, then increase velocity upward!
     if (m_velocity < 0 && (m_x >= x1 && m_x <= x2) && (m_y <= y && new_y >= y)) {
         m_velocity = 10;
+    }
+    */
+
+    // Check with all the possible collisions
+    for (const auto& box: possibleCollisions) {
+        // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
+        // or enemy)
+        if (box.collidesWith(*m_boundingBox)) {
+            m_velocity = 10;
+        }
     }
 
     // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
