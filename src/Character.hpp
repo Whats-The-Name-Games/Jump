@@ -1,8 +1,7 @@
 ﻿#ifndef JUMP_CHARACTER_H
 #define JUMP_CHARACTER_H
 #include <SDL3_image/SDL_image.h>
-
-class BoundingBox;
+#include "BoundingBox.hpp"
 
 class Character {
 public:
