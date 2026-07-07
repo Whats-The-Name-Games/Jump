@@ -57,6 +57,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     endif ()
 endif ()
 
+target_include_directories(jump PRIVATE include)
+
 target_link_libraries(jump PRIVATE
         SDL3::SDL3
         SDL3_image::SDL3_image
