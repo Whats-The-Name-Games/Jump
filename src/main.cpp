@@ -1,7 +1,9 @@
 ﻿#define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <vector>
 #include "Character.hpp"
+#include "Platform.hpp"
 
 /*
  *  Code by: Luke Deany and Michael Khan
@@ -9,6 +11,7 @@
  */
 
 typedef struct {
+    std::vector<Platform*> platforms;
     SDL_Window *window;
     SDL_Renderer *renderer;
     Character *player;
@@ -63,7 +66,14 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     SDL_RenderClear(state->renderer);
 
     state->player->Render(state->renderer);
-    state->player->VelocityTick(delta, {});
+
+    std::vector<BoundingBox*> boxes {};
+
+    for (const auto platform : state->platforms) {
+        boxes.push_back(platform->m_boundingBox);
+    }
+
+    state->player->VelocityTick(delta, boxes);
 
     SDL_RenderPresent(state->renderer);
 

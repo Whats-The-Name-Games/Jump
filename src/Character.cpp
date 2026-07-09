@@ -32,7 +32,7 @@ Character::Character(SDL_Renderer *renderer) {
 }
 
 // Have the character fall over time
-void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox> &possibleCollisions) {
+void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*> &possibleCollisions) {
     // Using the delta of frames, calculate how far we should fall (assuming velocity should change per second)
     const float velocity_tick = static_cast<float>(delta) / 1000.0f;
 
@@ -57,7 +57,7 @@ void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox> 
     for (const auto& box: possibleCollisions) {
         // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
         // or enemy)
-        if (box.collidesWith(*m_boundingBox)) {
+        if (box->collidesWith(*m_boundingBox)) {
             m_velocity = 10;
         }
     }
