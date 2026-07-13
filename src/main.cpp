@@ -4,19 +4,21 @@
 #include <vector>
 #include "Character.hpp"
 #include "Platform.hpp"
+#include "PoolAllocator.hpp"
 
 /*
  *  Code by: Luke Deany and Michael Khan
  *  Artwork by: Ted Freakdogshow
  */
 
-typedef struct {
-    std::vector<Platform*> platforms;
-    SDL_Window *window;
-    SDL_Renderer *renderer;
-    Character *player;
+typedef struct AppState {
+    PoolAllocator<Platform> allocator {20};
+    std::vector<Platform*> platforms {};
+    SDL_Window *window{};
+    SDL_Renderer *renderer{};
+    Character *player{};
     Uint64 PreviousTick{0};
-    bool is_running;
+    bool is_running{};
 } AppState;
 
 constexpr int WIDTH = 720;
