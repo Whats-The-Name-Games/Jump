@@ -83,6 +83,8 @@ Character::~Character() {
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
     }
+
+    delete m_boundingBox;
 }
 
 void Character::MoveX(const float x) {
