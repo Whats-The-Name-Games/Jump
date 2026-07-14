@@ -8,7 +8,8 @@ class BoundingBox;
 class Platform {
 public:
     explicit Platform(SDL_Renderer *);
-    BoundingBox *m_boundingBox;
+
+    ~Platform();
 
     /* Remove unused default class functions */
     // Remove Copy Constructor
@@ -19,6 +20,13 @@ public:
     Platform(Platform &&) = delete;
     // Remove Move Assignment
     Platform &operator=(Platform &&) = delete;
+
+    BoundingBox& getBoundingBox() const {
+        return *m_boundingBox;
+    }
+
+private:
+    BoundingBox *m_boundingBox;
 };
 
 

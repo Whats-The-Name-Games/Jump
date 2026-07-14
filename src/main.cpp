@@ -72,7 +72,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     std::vector<BoundingBox*> boxes {};
 
     for (const auto platform : state->platforms) {
-        boxes.push_back(platform->m_boundingBox);
+        boxes.push_back(&platform->getBoundingBox());
     }
 
     state->player->VelocityTick(delta, boxes);
