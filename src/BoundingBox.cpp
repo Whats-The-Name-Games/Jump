@@ -13,6 +13,10 @@ BoundingBox::BoundingBox(float x, float y, float width, float height) {
     m_rect = new SDL_FRect{x, y, width, height}; // init SDL_FRect to serve as our bounding box
 }
 
+BoundingBox::~BoundingBox() {
+    delete m_rect;
+}
+
 // If another bounding box intersects with this bounding box on both the X and Y axes, we can say that the bounding
 // boxes collide with one another.
 bool BoundingBox::collidesWith(BoundingBox const &otherBox) const {

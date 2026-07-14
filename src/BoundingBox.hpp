@@ -5,7 +5,7 @@
 class BoundingBox {
 public:
     BoundingBox(float x, float y, float width, float height);
-    ~BoundingBox() = default;
+    ~BoundingBox();
 
     /* Collision Detection API */
     bool collidesWith(BoundingBox const &) const;
