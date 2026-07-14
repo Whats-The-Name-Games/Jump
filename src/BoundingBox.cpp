@@ -10,9 +10,8 @@
 
 // Assumes an AABB (Axis Aligned Bounding Box)
 BoundingBox::BoundingBox(float x, float y, float width, float height) {
-    const SDL_FRect boundingBoxRect{x, y, width, height}; // init SDL_FRect to serve as our bounding box
-    m_rect = &boundingBoxRect;
-};
+    m_rect = new SDL_FRect{x, y, width, height}; // init SDL_FRect to serve as our bounding box
+}
 
 // If another bounding box intersects with this bounding box on both the X and Y axes, we can say that the bounding
 // boxes collide with one another.
