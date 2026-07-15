@@ -2,6 +2,7 @@
 #include "Character.hpp"
 #include <SDL3/SDL_log.h>
 #include <algorithm>
+#include <cmath>
 #include "BoundingBox.hpp"
 
 // Probably best somewhere else, but i'm tired of looking up best practices for today and just want this done
@@ -76,7 +77,9 @@ void Character::Render(SDL_Renderer *renderer) const {
                                          m_y - (static_cast<float>(m_height) / 2.0f), static_cast<float>(m_width),
                                          static_cast<float>(m_height)};
 
-    SDL_RenderTexture(renderer, m_texture, nullptr, &destinationRectangle);
+    SDL_FlipMode flip = m_flip ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
+
+    SDL_RenderTextureRotated(renderer, m_texture, nullptr, &destinationRectangle, 0, nullptr,  flip);
 
     SDL_RenderRect(renderer, m_boundingBox->getRect());
 }
@@ -92,6 +95,13 @@ Character::~Character() {
 }
 
 void Character::MoveX(const float x) {
+    // Logic of flipping the character based on mouse delta
+    bool diff = std::abs(m_x - x) >= 2.5f;
+
+    if (diff) {
+        m_flip = m_x < x;
+    }
+
     // TODO: maybe mutex this or something /shrug
     m_x = x;
 }

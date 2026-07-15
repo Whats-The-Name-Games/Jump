@@ -44,6 +44,9 @@ private:
     int m_width{0};
     int m_height{0};
 
+    // If most recently went right, flip is false, if most recently went right, flip is true
+    bool m_flip{false};
+
     // The character's current vertical velocity.
     float m_velocity{0};
 };
