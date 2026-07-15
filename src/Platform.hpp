@@ -7,7 +7,7 @@ class BoundingBox;
 
 class Platform {
 public:
-    explicit Platform(SDL_Renderer *);
+    Platform();
 
     ~Platform();
 
@@ -20,6 +20,8 @@ public:
     Platform(Platform &&) = delete;
     // Remove Move Assignment
     Platform &operator=(Platform &&) = delete;
+
+    void Render(SDL_Renderer *) const;
 
     BoundingBox& getBoundingBox() const {
         return *m_boundingBox;

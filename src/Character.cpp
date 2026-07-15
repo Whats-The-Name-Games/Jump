@@ -52,6 +52,14 @@ void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*>
         m_velocity = 10;
     }
     */
+    // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
+    m_y -= m_velocity;
+    if (m_y > 1280) {
+        m_y = -200;
+    }
+
+    // TODO: Better way of handling mouse position
+    m_boundingBox->setDimensions(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
 
     // Check with all the possible collisions
     for (const auto& box: possibleCollisions) {
@@ -61,12 +69,6 @@ void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*>
             m_velocity = 10;
         }
     }
-
-    // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
-    m_y -= m_velocity;
-    if (m_y > 1280) {
-        m_y = -200;
-    }
 }
 
 void Character::Render(SDL_Renderer *renderer) const {
@@ -75,6 +77,8 @@ void Character::Render(SDL_Renderer *renderer) const {
                                          static_cast<float>(m_height)};
 
     SDL_RenderTexture(renderer, m_texture, nullptr, &destinationRectangle);
+
+    SDL_RenderRect(renderer, m_boundingBox->getRect());
 }
 
 Character::~Character() {

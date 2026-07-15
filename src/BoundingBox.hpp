@@ -14,11 +14,14 @@ public:
     // TODO: Impl rendering. Should be called by main if some debug value is true. Perhaps passed in game state?
     void render(SDL_Renderer *);
 
+    void setDimensions(float x, float y);
+
+    SDL_FRect* getRect() const {
+        return m_rect;
+    }
+
 private:
-    // SDL FRect functions require a const FRect (likely to deal with potential multithreading problems?)
-    // Underlying rect therefore stored in pointer. Pointer can change to a NEW rect, but actual rect cannot be modified
-    // directly.
-    const SDL_FRect *m_rect;
+    SDL_FRect* const m_rect;
 };
 
 #endif // !JUMP_BOUNDINGBOX_H

@@ -1,8 +1,12 @@
 ﻿#include "Platform.hpp"
 #include "BoundingBox.hpp"
 
-Platform::Platform(SDL_Renderer *) {
-    m_boundingBox = new BoundingBox(500, 900, 50, 10);
+Platform::Platform() {
+    m_boundingBox = new BoundingBox{500, 900, 100, 5};
+}
+
+void Platform::Render(SDL_Renderer * renderer) const {
+    SDL_RenderRect(renderer, m_boundingBox->getRect());
 }
 
 Platform::~Platform() {

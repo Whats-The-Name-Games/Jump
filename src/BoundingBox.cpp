@@ -9,9 +9,7 @@
 // greater than it will be further down. y = 15 is higher than y = 50.
 
 // Assumes an AABB (Axis Aligned Bounding Box)
-BoundingBox::BoundingBox(float x, float y, float width, float height) {
-    m_rect = new SDL_FRect{x, y, width, height}; // init SDL_FRect to serve as our bounding box
-}
+BoundingBox::BoundingBox(float x, float y, float width, float height) : m_rect{new SDL_FRect{x, y, width, height}} {}
 
 BoundingBox::~BoundingBox() {
     delete m_rect;
@@ -27,4 +25,9 @@ bool BoundingBox::collidesWith(BoundingBox const &otherBox) const {
         return false;
     }
     return SDL_HasRectIntersectionFloat(m_rect, otherBox.m_rect);
+}
+
+void BoundingBox::setDimensions(float x, float y) {
+    m_rect->x = x;
+    m_rect->y = y;
 }

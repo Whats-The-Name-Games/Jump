@@ -48,7 +48,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
     state->platforms.reserve(20);
 
-    Platform* pPlatform = state->allocator.construct(state->renderer);
+    Platform* pPlatform = state->allocator.construct();
     state->platforms.push_back(pPlatform);
 
     return SDL_APP_CONTINUE;
@@ -71,12 +71,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     // Render all "clear" pixels on screen w/ bg color
     SDL_RenderClear(state->renderer);
 
-    state->player->Render(state->renderer);
-
     std::vector<BoundingBox*> boxes {};
+
+    SDL_SetRenderDrawColor(state->renderer, 255 ,0 ,0, SDL_ALPHA_OPAQUE_FLOAT);
+
+    state->player->Render(state->renderer);
 
     for (const auto platform : state->platforms) {
         boxes.push_back(&platform->getBoundingBox());
+
+        platform->Render(state->renderer);
     }
 
     state->player->VelocityTick(delta, boxes);
