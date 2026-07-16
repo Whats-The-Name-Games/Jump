@@ -92,8 +92,11 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     Uint64 difference = state->player->VelocityTick(delta, boxes);
     state->score += difference;
 
-    for (const auto platform: state->platforms) {
-        platform->MoveDown(difference);
+    // Only update all platforms if our score difference is not 0
+    if (difference != 0) {
+        for (const auto platform: state->platforms) {
+            platform->MoveDown(difference);
+        }
     }
 
     SDL_RenderPresent(state->renderer);
