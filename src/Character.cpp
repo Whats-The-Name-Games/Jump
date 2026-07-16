@@ -56,7 +56,7 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
     // Subtraction because higher Y values are at the top of the screen, so negative velocity would go up
     m_y -= m_velocity;
     if (m_y > 1280) {
-        m_y = -200;
+        m_y = 500;
     }
 
     Uint64 scoreDelta = 0;
