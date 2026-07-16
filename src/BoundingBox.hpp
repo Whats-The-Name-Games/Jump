@@ -14,7 +14,7 @@ public:
     // TODO: Impl rendering. Should be called by main if some debug value is true. Perhaps passed in game state?
     void render(SDL_Renderer *);
 
-    void setDimensions(float x, float y);
+    void setCoordinates(float x, float y);
 
     SDL_FRect* getRect() const {
         return m_rect;

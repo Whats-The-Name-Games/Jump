@@ -7,7 +7,7 @@ class BoundingBox;
 
 class Platform {
 public:
-    Platform();
+    Platform(float, float);
 
     ~Platform();
 
@@ -22,6 +22,9 @@ public:
     Platform &operator=(Platform &&) = delete;
 
     void Render(SDL_Renderer *) const;
+
+    // Used to move down platforms when the player goes up
+    void MoveDown(Uint64 height) const;
 
     BoundingBox& getBoundingBox() const {
         return *m_boundingBox;

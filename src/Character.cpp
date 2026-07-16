@@ -33,7 +33,7 @@ Character::Character(SDL_Renderer *renderer) {
 }
 
 // Have the character fall over time
-void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*> &possibleCollisions) {
+Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox *> &possibleCollisions) {
     // Using the delta of frames, calculate how far we should fall (assuming velocity should change per second)
     const float velocity_tick = static_cast<float>(delta) / 1000.0f;
 
@@ -59,8 +59,16 @@ void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*>
         m_y = -200;
     }
 
+    Uint64 scoreDelta = 0;
+
+    // If the player is above the defined y height, for now 500, then just move the score up that amount and set the y to 500!
+    if (m_y < 500) {
+        scoreDelta = static_cast<Uint64>(500.f - m_y);
+        m_y = 500;
+    }
+
     // TODO: Better way of handling mouse position
-    m_boundingBox->setDimensions(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
+    m_boundingBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
 
     // Check with all the possible collisions
     for (const auto& box: possibleCollisions) {
@@ -70,6 +78,8 @@ void Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox*>
             m_velocity = 10;
         }
     }
+
+    return scoreDelta;
 }
 
 void Character::Render(SDL_Renderer *renderer) const {

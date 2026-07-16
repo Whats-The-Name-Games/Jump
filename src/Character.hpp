@@ -14,7 +14,8 @@ public:
     // Bounding Box
     BoundingBox *m_boundingBox;
     // Given the time elapsed since the last tick, calculate the player's current velocity.
-    void VelocityTick(Uint64, const std::vector<BoundingBox*>&);
+    // Returns how much the player is above y = 500
+    Uint64 VelocityTick(Uint64, const std::vector<BoundingBox*>&);
 
     /* Graphics Functions */
     void Render(SDL_Renderer *) const;

@@ -27,7 +27,7 @@ bool BoundingBox::collidesWith(BoundingBox const &otherBox) const {
     return SDL_HasRectIntersectionFloat(m_rect, otherBox.m_rect);
 }
 
-void BoundingBox::setDimensions(float x, float y) {
+void BoundingBox::setCoordinates(float x, float y) {
     m_rect->x = x;
     m_rect->y = y;
 }

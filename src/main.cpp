@@ -17,6 +17,7 @@ typedef struct AppState {
     SDL_Window *window{};
     SDL_Renderer *renderer{};
     Character *player{};
+    Uint64 score {0};
     Uint64 PreviousTick{0};
     bool is_running{};
 } AppState;
@@ -48,8 +49,13 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
     state->platforms.reserve(20);
 
-    Platform* pPlatform = state->allocator.construct();
+    Platform* pPlatform = state->allocator.construct(500, 900);
+    Platform* pPlatform2 = state->allocator.construct(200, -100);
+    Platform* pPlatform3 = state->allocator.construct(300, 400);
     state->platforms.push_back(pPlatform);
+    state->platforms.push_back(pPlatform2);
+    state->platforms.push_back(pPlatform3);
+
 
     return SDL_APP_CONTINUE;
 }
@@ -83,7 +89,12 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         platform->Render(state->renderer);
     }
 
-    state->player->VelocityTick(delta, boxes);
+    Uint64 difference = state->player->VelocityTick(delta, boxes);
+    state->score += difference;
+
+    for (const auto platform: state->platforms) {
+        platform->MoveDown(difference);
+    }
 
     SDL_RenderPresent(state->renderer);
 
