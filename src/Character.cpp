@@ -70,12 +70,15 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
     // TODO: Better way of handling mouse position
     m_boundingBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
 
-    // Check with all the possible collisions
-    for (const auto& box: possibleCollisions) {
-        // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
-        // or enemy)
-        if (box->collidesWith(*m_boundingBox)) {
-            m_velocity = 10;
+    // Only check if player is moving down
+    if (m_velocity <= 0) {
+        // Check with all the possible collisions
+        for (const auto& box: possibleCollisions) {
+            // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
+            // or enemy)
+            if (box->collidesWith(*m_boundingBox)) {
+                m_velocity = 10;
+            }
         }
     }
 
