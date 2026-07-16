@@ -11,8 +11,6 @@ public:
     ~Character();
 
     /* Physics Functions (Delta Time) */
-    // Bounding Box
-    BoundingBox *m_boundingBox;
     // Given the time elapsed since the last tick, calculate the player's current velocity.
     // Returns how much the player is above y = 500
     Uint64 VelocityTick(Uint64, const std::vector<BoundingBox*>&);
@@ -36,6 +34,10 @@ public:
 private:
     // Texture Data
     SDL_Texture *m_texture;
+
+    // Bounding Box
+    BoundingBox *m_boundingBox;
+    BoundingBox *m_feetBox;
 
     // X and Y coordinate positions respectively
     float m_x{50};

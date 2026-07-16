@@ -25,6 +25,7 @@ Character::Character(SDL_Renderer *renderer) {
 
         // Create Bounding Box!
         m_boundingBox = new BoundingBox(m_x, m_y, m_width, m_height);
+        m_feetBox = new BoundingBox(m_x, m_y , m_width, 5);
     } else {
         // TODO: This failure means we cannot provide collision for the player. Should this crash the program or lead it
         // to default to a predefined size?
@@ -69,6 +70,7 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
 
     // TODO: Better way of handling mouse position
     m_boundingBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
+    m_feetBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y + (static_cast<float>(m_height) / 2) - 5 );
 
     // Only check if player is moving down
     if (m_velocity <= 0) {
@@ -76,7 +78,7 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
         for (const auto& box: possibleCollisions) {
             // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
             // or enemy)
-            if (box->collidesWith(*m_boundingBox)) {
+            if (box->collidesWith(*m_feetBox)) {
                 m_velocity = 10;
             }
         }
@@ -95,6 +97,7 @@ void Character::Render(SDL_Renderer *renderer) const {
     SDL_RenderTextureRotated(renderer, m_texture, nullptr, &destinationRectangle, 0, nullptr,  flip);
 
     SDL_RenderRect(renderer, m_boundingBox->getRect());
+    SDL_RenderRect(renderer, m_feetBox->getRect());
 }
 
 Character::~Character() {
