@@ -96,6 +96,16 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
     if (difference != 0) {
         for (const auto platform: state->platforms) {
             platform->MoveDown(difference);
+
+            // Deallocate box if moved out
+            if (platform->getBoundingBox().getRect()->y > HEIGHT) {
+                state->allocator.destroy(platform);
+
+                SDL_Log("Platform destroyed!");
+
+                // Delete the platform
+                std::erase(state->platforms, platform);
+            }
         }
     }
 
