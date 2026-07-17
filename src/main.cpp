@@ -1,6 +1,7 @@
 ﻿#define SDL_MAIN_USE_CALLBACKS
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <random>
 #include <vector>
 #include "Character.hpp"
 #include "Platform.hpp"
@@ -11,19 +12,24 @@
  *  Artwork by: Ted Freakdogshow
  */
 
+constexpr int WIDTH = 720;
+constexpr int HEIGHT = 1280;
+
 typedef struct AppState {
     PoolAllocator<Platform> allocator {20};
     std::vector<Platform*> platforms {};
     SDL_Window *window{};
     SDL_Renderer *renderer{};
     Character *player{};
+    std::random_device randomSeed;
+    std::mt19937 rng {randomSeed()};
+    std::uniform_real_distribution<float> positionDistribution {0, WIDTH - 100};
+    std::uniform_real_distribution<float> heightDistribution {-100, 100};
     Uint64 score {0};
+    Uint64 lastSpawned {0};
     Uint64 PreviousTick{0};
     bool is_running{};
 } AppState;
-
-constexpr int WIDTH = 720;
-constexpr int HEIGHT = 1280;
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
     SDL_SetAppMetadata("Jig is Up", "0.1", "com.whatsthenamegames.jigisup");
@@ -89,13 +95,30 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
         platform->Render(state->renderer);
     }
 
-    Uint64 difference = state->player->VelocityTick(delta, boxes);
-    state->score += difference;
+    const Uint64 scoreDelta = state->player->VelocityTick(delta, boxes);
+    state->score += scoreDelta;
+
+    const Uint64 scoreDifference = state->score - state->lastSpawned;
+
+    const Uint64 lowerScoreNormalized = state->lastSpawned - (state->lastSpawned % 300);
+    const Uint64 upperScoreNormalized = state->score - (state->score % 300);
+
+    const Uint64 amountToSpawn = (upperScoreNormalized - lowerScoreNormalized) / 300;
+
+    Uint64 lastSpawnPosition = lowerScoreNormalized;
+
+    for (int i = 0; i < amountToSpawn; i++) {
+        lastSpawnPosition = lastSpawnPosition + 300;
+
+        state->platforms.push_back(state->allocator.construct( state->positionDistribution(state->rng) , -10.f + static_cast<float>(state->score - lastSpawnPosition) + state->heightDistribution(state->rng)));
+    }
+
+    state->lastSpawned = state->score;
 
     // Only update all platforms if our score difference is not 0
-    if (difference != 0) {
+    if (scoreDelta != 0) {
         for (const auto platform: state->platforms) {
-            platform->MoveDown(difference);
+            platform->MoveDown(scoreDelta);
 
             // Deallocate box if moved out
             if (platform->getBoundingBox().getRect()->y > HEIGHT) {
