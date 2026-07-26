@@ -11,25 +11,28 @@ constexpr float GRAVITY = 9.81f;
 Character::Character(SDL_Renderer *renderer) {
     SDL_Log("Character Constructed\n");
 
-    SDL_Surface *loadedSurface = IMG_Load("../assets/character.png");
+    SDL_Surface *loadedSurface = IMG_Load("../assets/jigrotate-Sheet.png");
 
     if (loadedSurface != nullptr) {
         // Load PNG, load as surface, convert to texture, clean up surface from memory and reap important information
         // from time as a surface.
         m_texture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 
-        m_height = loadedSurface->h;
-        m_width = loadedSurface->w;
+        // m_height = loadedSurface->h;
+        // m_width = loadedSurface->w;
+
+        m_height = 64;
+        m_width = 64;
 
         SDL_DestroySurface(loadedSurface);
 
         // Create Bounding Box!
         m_boundingBox = new BoundingBox(m_x, m_y, m_width, m_height);
-        m_feetBox = new BoundingBox(m_x, m_y , m_width, 5);
+        m_feetBox = new BoundingBox(m_x, m_y, m_width, 15);
     } else {
         // TODO: This failure means we cannot provide collision for the player. Should this crash the program or lead it
         // to default to a predefined size?
-        SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load character.png");
+        SDL_LogError(SDL_LOG_PRIORITY_ERROR, "Failed to load jigrotate-Sheet.png");
     }
 }
 
@@ -62,22 +65,25 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
 
     Uint64 scoreDelta = 0;
 
-    // If the player is above the defined y height, for now 500, then just move the score up that amount and set the y to 500!
+    // If the player is above the defined y height, for now 500, then just move the score up that amount and set the y
+    // to 500!
     if (m_y < 500) {
         scoreDelta = static_cast<Uint64>(500.f - m_y);
         m_y = 500;
     }
 
     // TODO: Better way of handling mouse position
-    m_boundingBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y - (static_cast<float>(m_height) / 2.0f));
-    m_feetBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f) , m_y + (static_cast<float>(m_height) / 2) - 5 );
+    m_boundingBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f),
+                                  m_y - (static_cast<float>(m_height) / 2.0f));
+    m_feetBox->setCoordinates(m_x - (static_cast<float>(m_width) / 2.0f),
+                              m_y + (static_cast<float>(m_height) / 2) - 15);
 
     // Only check if player is moving down
     if (m_velocity <= 0) {
         // Check with all the possible collisions
-        for (const auto& box: possibleCollisions) {
-            // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a platform
-            // or enemy)
+        for (const auto &box: possibleCollisions) {
+            // TODO: Update this with some sort of logic (variant/visitor?) to determine if we're colliding with a
+            // platform or enemy)
             if (box->collidesWith(*m_feetBox)) {
                 m_velocity = 10;
             }
@@ -94,7 +100,9 @@ void Character::Render(SDL_Renderer *renderer) const {
 
     SDL_FlipMode flip = m_flip ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
-    SDL_RenderTextureRotated(renderer, m_texture, nullptr, &destinationRectangle, 0, nullptr,  flip);
+    SDL_FRect sourceRectangle{static_cast<float>(64 * m_frame), 0, 64, 64};
+
+    SDL_RenderTextureRotated(renderer, m_texture, &sourceRectangle, &destinationRectangle, 0, nullptr, flip);
 
     SDL_RenderRect(renderer, m_boundingBox->getRect());
     SDL_RenderRect(renderer, m_feetBox->getRect());
