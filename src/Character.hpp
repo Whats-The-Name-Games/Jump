@@ -2,6 +2,7 @@
 #define JUMP_CHARACTER_H
 #include <SDL3_image/SDL_image.h>
 #include <vector>
+#include <array>
 #include "BoundingBox.hpp"
 
 class Character {
@@ -17,6 +18,8 @@ public:
 
     /* Graphics Functions */
     void Render(SDL_Renderer *) const;
+    void RenderTick();
+
     // "Move" in the physical sense, not memory.
     // Move character's x position relative to the mouse's current X position
     void MoveX(float);
@@ -41,8 +44,11 @@ private:
 
     Uint64 m_lastAnimationTick{0};
 
-    // The current frame we're on
-    int m_frame{0};
+    // The current frame we're on of the jump animation
+    int m_animationFrame{0};
+
+    // the current frame of the overall sprite we're on
+    int m_frame {0};
 
     // X and Y coordinate positions respectively
     float m_x{50};
@@ -57,6 +63,8 @@ private:
 
     // The character's current vertical velocity.
     float m_velocity{0};
+
+    static constexpr std::array<int, 7> s_jump = {3, 6, 7, 8, 9, 5, 3};
 };
 
 #endif // JUMP_CHARACTER_H

@@ -86,6 +86,9 @@ Uint64 Character::VelocityTick(const Uint64 delta, const std::vector<BoundingBox
             // platform or enemy)
             if (box->collidesWith(*m_feetBox)) {
                 m_velocity = 10;
+
+                // Begin playing animation
+                m_animationFrame = 1;
             }
         }
     }
@@ -100,12 +103,37 @@ void Character::Render(SDL_Renderer *renderer) const {
 
     SDL_FlipMode flip = m_flip ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL;
 
+    // The rectangle we want to use (frame of sprite) is the frame in our jump animation
     SDL_FRect sourceRectangle{static_cast<float>(64 * m_frame), 0, 64, 64};
 
     SDL_RenderTextureRotated(renderer, m_texture, &sourceRectangle, &destinationRectangle, 0, nullptr, flip);
 
-    SDL_RenderRect(renderer, m_boundingBox->getRect());
-    SDL_RenderRect(renderer, m_feetBox->getRect());
+    //SDL_RenderRect(renderer, m_boundingBox->getRect());
+    //SDL_RenderRect(renderer, m_feetBox->getRect());
+}
+
+void Character::RenderTick() {
+    if (m_animationFrame != 0) {
+
+        if (const Uint64 tick = SDL_GetTicks(); tick - m_lastAnimationTick > 100 ) {
+            // Calculate where we should be in the jump animation
+            m_animationFrame =  (m_animationFrame + 1) % static_cast<int>(std::size(s_jump));
+
+            // Then set our current frame to that
+            m_frame = s_jump[m_animationFrame];
+
+            m_lastAnimationTick = tick;
+        }
+    } else {
+        // If we're not in the jump animation just set animation based on velocity
+        if (m_velocity > 0) {
+            m_frame = 3;
+        } else if (m_velocity > -3) {
+            m_frame = 4;
+        } else {
+            m_frame = 6;
+        }
+    }
 }
 
 Character::~Character() {

@@ -87,6 +87,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
     SDL_SetRenderDrawColor(state->renderer, 255 ,0 ,0, SDL_ALPHA_OPAQUE_FLOAT);
 
+    state->player->RenderTick();
     state->player->Render(state->renderer);
 
     for (const auto platform : state->platforms) {
