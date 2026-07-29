@@ -31,6 +31,11 @@ typedef struct AppState {
     bool is_running{};
 } AppState;
 
+void setupGame(AppState *);
+void clearGame(AppState *);
+
+bool g_test = false;
+
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
     SDL_SetAppMetadata("Jig is Up", "0.1", "com.whatsthenamegames.jigisup");
 
@@ -55,15 +60,37 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char **argv) {
 
     state->platforms.reserve(20);
 
+    setupGame(state);
+
+    return SDL_APP_CONTINUE;
+}
+
+void setupGame(AppState * state) {
+
     Platform* pPlatform = state->allocator.construct(500, 900);
     Platform* pPlatform2 = state->allocator.construct(200, -100);
     Platform* pPlatform3 = state->allocator.construct(300, 400);
+
     state->platforms.push_back(pPlatform);
     state->platforms.push_back(pPlatform2);
     state->platforms.push_back(pPlatform3);
+}
 
+void clearGame(AppState * state) {
+    state->player->Reset();
 
-    return SDL_APP_CONTINUE;
+    SDL_Log("I was clearing. I'm clearing right now.\n");
+
+    for ( auto platform : state->platforms) {
+        state->allocator.destroy(platform);
+    }
+
+    state->platforms.clear();
+
+    g_test = true;
+
+    state->score = 0;
+    state->lastSpawned = 0;
 }
 
 // Every frame? Maybe? Something like that
@@ -122,7 +149,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
             platform->MoveDown(scoreDelta);
 
             // Deallocate box if moved out
-            if (platform->getBoundingBox().getRect()->y > HEIGHT) {
+            if (platform->getBoundingBox().getRect().y > HEIGHT) {
                 state->allocator.destroy(platform);
 
                 SDL_Log("Platform destroyed!");
@@ -131,6 +158,12 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
                 std::erase(state->platforms, platform);
             }
         }
+    }
+
+    // If the player fell off, teardown the game and rebuild it
+    if (state->player->checkForFailure()) {
+        clearGame(state);
+        setupGame(state);
     }
 
     SDL_RenderPresent(state->renderer);

@@ -24,6 +24,12 @@ public:
     // Move character's x position relative to the mouse's current X position
     void MoveX(float);
 
+    // Returns true if the character fell off the map
+    bool checkForFailure() const;
+
+    // Resets the players Y position
+    void Reset();
+
     /* Remove unused default class functions */
     // Remove Copy Constructor
     Character(const Character &) = delete;

@@ -6,13 +6,14 @@ Platform::Platform(float x, float y) {
 }
 
 void Platform::Render(SDL_Renderer * renderer) const {
-    SDL_RenderRect(renderer, m_boundingBox->getRect());
+    const SDL_FRect rect = m_boundingBox->getRect();
+    SDL_RenderRect(renderer, &rect);
 }
 
 void Platform::MoveDown(const Uint64 height) const {
-    const SDL_FRect* box = m_boundingBox->getRect();
+    const SDL_FRect box = m_boundingBox->getRect();
 
-    m_boundingBox->setCoordinates(box->x, box->y + static_cast<float>(height));
+    m_boundingBox->setCoordinates(box.x, box.y + static_cast<float>(height));
 }
 
 Platform::~Platform() {
