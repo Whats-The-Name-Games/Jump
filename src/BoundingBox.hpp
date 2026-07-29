@@ -1,6 +1,7 @@
 #ifndef JUMP_BOUNDINGBOX_H
 #define JUMP_BOUNDINGBOX_H
 #include <SDL3_image/SDL_image.h>
+#include <memory>
 
 class BoundingBox {
 public:
@@ -16,12 +17,14 @@ public:
 
     void setCoordinates(float x, float y);
 
-    SDL_FRect* getRect() const {
-        return m_rect;
+    // Return by value as we want the rectangle to be maintained even if the bounding box dies to avoid exceptions
+    [[nodiscard]]
+    SDL_FRect getRect() const {
+        return *m_rect;
     }
 
 private:
-    SDL_FRect* const m_rect;
+    std::unique_ptr<SDL_FRect> m_rect;
 };
 
 #endif // !JUMP_BOUNDINGBOX_H
